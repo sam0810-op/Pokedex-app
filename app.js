@@ -66,6 +66,8 @@ app.put('/pokemons/:id', async (req, res) => {
   res.json(updated);
 });
 
+ // delete method
+ 
 
 // app.get('/', (request, response) => {
 //   response.send('Express Home Page 🏠');
