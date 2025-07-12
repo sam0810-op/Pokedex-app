@@ -67,6 +67,17 @@ app.put('/pokemons/:id', async (req, res) => {
 });
 
  // delete method
+ app.delete('/pokemons/:id', async (req, res) => {
+  try {
+    const deleted = await Pokemon.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Pokemon not found' });
+    }
+    res.json({ message: 'Pokemon deleted successfully', deleted });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
  
 
 // app.get('/', (request, response) => {

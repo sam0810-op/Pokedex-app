@@ -32,6 +32,7 @@ const App = () => {
 
         await axios.put(`${API_URL}/${editId}`, form);
         alert('Pokemon Updated Successfully ✅');
+        setEditId(null); 
       } else {
         await axios.post(API_URL, form);
         alert('Pokemon added Successfully ✅');
@@ -50,7 +51,7 @@ const App = () => {
     setEditId(poke._id);
   };
 
- 
+
 
 
 
@@ -64,13 +65,28 @@ const App = () => {
   console.log('formData', form);
 
   //handle delete
+  // Delete Pokemon
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this Pokémon?");
+    if (!confirm) return;
+
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      alert('Pokemon deleted successfully ❌');
+      fetchData(); // refresh the list
+    } catch (err) {
+      console.error('Failed to delete pokemon', err.message);
+      alert('⚠ Failed to delete Pokémon');
+    }
+  };
 
 
 
 
   return (
-    <div style={{ padding: 20, margin: 'auto', maxWidth: 600 }}>
+    <div style={{ padding: 20, margin: 'auto', maxWidth: 300 }}>
       <h1>Pokemon CRUD 🔥</h1>
+      <br /><br />
       <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
         <label>Name </label>
         <input name='name' value={form.name} onChange={handleChange} required />
@@ -89,9 +105,9 @@ const App = () => {
 
         <br /><br />
 
-        <button type='submit'>
-
-          {editId ? 'Update' : 'Add'} Pokemon
+        <button type='submit' style={{ backgroundColor: 'green', color: 'white' }}>
+         Add a Pokemon
+         
         </button>
       </form>
 
@@ -106,8 +122,13 @@ const App = () => {
               </li>
               <li>
                 <strong>Power:  {item.power}</strong>
+                <br /><br />
+                <button onClick={() => handleEdit(item)} style={{ marginRight: 10 }}>Edit ✏️</button>
+                <button onClick={() => handleDelete(item._id)} style={{ backgroundColor: 'red', color: 'white' }}>Delete 🗑️</button>
               </li><br />
-             
+
+
+
 
             </>
 
